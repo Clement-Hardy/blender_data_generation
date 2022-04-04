@@ -332,16 +332,7 @@ def read_material(provider, texture_index, nb_texture):
 
 def apply_displacement(obj, img_displacement):
     bpy.context.view_layer.objects.active = obj
-    """
-    bpy.ops.object.mode_set(mode="EDIT")
-    bpy.ops.mesh.subdivide(number_cuts=1)
-    bpy.ops.object.mode_set(mode="OBJECT")
 
-    mod = obj.modifiers.new("", 'SUBSURF')
-    mod.levels = 1
-
-    mod.subdivision_type = "SIMPLE"
-    """
     area = sum([bpy.context.active_object.data.polygons[i].area for i in range(len(bpy.context.active_object.data.polygons))])
     
     #print(len(bpy.context.active_object.data.polygons))
@@ -719,18 +710,7 @@ def take_picture_view(obj, folder_name_save, path_dataset, coord_lamps,
                 if os.path.exists(file_output):
                     os.remove(file_output)
                 shutil.move(file_input, file_output)
-                
-                """
-                file_shadow_input = os.path.join(path_dataset, "shadow", "{}.{}".format(name_Image_output_render, format))
-                folder = os.path.join(path_save, "shadow", folder_name_save)
-                if not os.path.exists(folder):
-                    os.makedirs(folder)
-                file_shadow_output = os.path.join(folder, "Image_{}_{}_{}_{}.{}".format(x, y, z, rho, format))
-                if os.path.exists(file_shadow_output):
-                    os.remove(file_shadow_output)
-                shutil.move(file_shadow_input, file_shadow_output) 
-                """
-                
+
                 if depth:
                     file_scan_input = os.path.join(path_dataset, "depth", "{}.{}".format(name_Image_output_render, format))
                     folder = os.path.join(path_save, "depth", folder_name_save)
@@ -1055,10 +1035,14 @@ sched.start()
 
         
 name_process = uuid.uuid4().hex
+
+
+# need to be change
 path = "/data/chercheurs/hardy216/data/blender_data_generation"
 path_common_check = "/home/hardy216/Desktop/test/"
-path_common_check = "/home/personnels/hardy216/code/object_done/"
-#path = "/home/hardy216/Desktop/"
+
+
+
 path_save = os.path.join(path, "blender_result")
 path_obj = os.path.join(path, "blender_obj")
 
@@ -1069,18 +1053,19 @@ path_texture_ambientcg = os.path.join(path_texture, "ambientcg")
 possible_features_ambientcg = os.listdir(path_texture_ambientcg)
 
 
-bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[0].default_value[2] = 0
-bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[0].default_value[1] = 0
-bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[0].default_value[0] = 0
-
-bpy.context.scene.cycles.samples = 256
-
 resolution = 128
 nb_image = 96*2.1
 nb_view = 3
 nb_texture_per_object = 1
 apply_normal_material = True
 
+
+
+bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[0].default_value[2] = 0
+bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[0].default_value[1] = 0
+bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[0].default_value[0] = 0
+
+bpy.context.scene.cycles.samples = 256
 
 bpy.data.cameras['Camera'].type = "ORTHO"
 bpy.context.scene.render.resolution_x = resolution
@@ -1090,7 +1075,6 @@ bpy.data.cameras['Camera'].ortho_scale = 0.7
 bpy.data.objects['Vide'].location[0] = 0
 bpy.data.objects['Vide'].location[1] = 0
 bpy.data.objects['Vide'].location[2] = -1
-
 
 
 gpu = None

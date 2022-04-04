@@ -10,7 +10,8 @@ import time
 import argparse
 from tqdm import tqdm
 
-path_to_blender = "/data/chercheurs/hardy216/data/blender_data_generation/blender-2.93.6/blender automatic_database_generation_serveur_greyc.blend"
+path_to_blender = "/data/chercheurs/hardy216/data/blender_data_generation/blender-2.93.6/blender"
+command = os.path.join(path_to_blender, "automatic_database_generation_serveur_greyc.blend")
 
 
 parser = argparse.ArgumentParser()
@@ -40,7 +41,7 @@ else:
 print("gpu ", gpu)
 print("max duration", max_time)
 print("num process", num_process)
-command = path_to_blender+" --background --python pipeline_serveur.py -- gpu={} --num={}".format(gpu, num_process)
+command = command+" --background --python pipeline_serveur.py -- gpu={} --num={}".format(gpu, num_process)
 
 beginning = time.time()
 for i in tqdm(range(3000)):
